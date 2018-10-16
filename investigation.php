@@ -47,9 +47,9 @@ include_once "php/check_authentication.php";
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <a class="collapse-link" data-toggle="collapse" data-target="#search">
+                        <a class="collapse-link  waves-effect waves-dark" data-toggle="collapse" data-target="#search">
                             <div class="card-header bg-info">
-                                <h4 class="m-b-0 text-white">للبحث داخل الدفتر</h4>
+                                <h4 class="<?php if (isset($_POST['submit'])){echo"blink";} ?> m-b-0 text-white ">للبحث داخل الدفتر</h4>
                             </div>
                         </a>
                         <?php
@@ -82,9 +82,7 @@ FROM
 WHERE
   case_has_investigation.status = 1 AND
   case_has_investigation.deleted = 0 AND
-  pros_has_users.users_id = '$user_id'
-GROUP BY 
-  `case`.id";
+  pros_has_users.users_id = '$user_id'";
                             if (!empty($_POST['investigation_number'])) {
                                 $investigation_number=$_POST['investigation_number'];
                                 if(trim($investigation_number) != ''){$investigation_query .= " AND  `case_has_investigation`.investigation_number='$investigation_number'";}
@@ -125,7 +123,7 @@ GROUP BY
                                 $case_status=$_POST['case_status'];
                                 if(trim($case_status) != ''){$investigation_query .= " AND case_status.idcase_status = '$case_status'";}
                             }
-                            $investigation_query .= " GROUP BY case_has_investigation.id_case_has_investigation";
+                            $investigation_query .= " GROUP BY case.id";
                         }else{
                             $investigation_query="SELECT
   case_has_investigation.investigation_number,
@@ -260,10 +258,13 @@ WHERE
                                                     <option value="" disabled selected></option>
                                                     <?php
                                                     $query = "SELECT
-                                                      charges.name AS charges_name,
-                                                      charges.id_charges
-                                                    FROM
-                                                      charges";
+  charges.id_charges,
+  charges.name AS charges_name
+FROM
+  charges
+WHERE
+  charges.status = 1 AND
+  charges.deleted = 0";
                                                     $results=mysqli_query($con, $query);
                                                     //loop
                                                     foreach ($results as $charges){
@@ -388,7 +389,7 @@ WHERE
             </div>
             <!-- end of search form -->
             <!-- ============================================================== -->
-
+<?php //echo $investigation_query ?>
             <!-- ============================================================== -->
             <!-- Start Page Content -->
             <div class="row">
@@ -443,11 +444,11 @@ WHERE
                                                 $color = "purple";
                                                 while ($reason_to_done_info = $reason_to_done->fetch_assoc()) {
                                                     ?>
-                                                    <span type="button" class="btn-rounded">
+                                                    <button type="button" class="btn waves-effect waves-light btn-primary">
                                                         <?php
                                                         echo $reason_to_done_info['charges_name']
                                                         ?>
-                                                    </span>
+                                                       </button>
                                                     <?php
                                                 }
                                                 ?>
@@ -472,11 +473,11 @@ WHERE
                                                 $color = "purple";
                                                 while ($reason_to_done_info = $reason_to_done->fetch_assoc()) {
                                                     ?>
-                                                    <span type="button" class="btn-rounded">
+                                                <button type="button" class="btn waves-effect waves-light btn-danger">
                                                         <?php
                                                         echo $reason_to_done_info['reason_to_done_name']
                                                         ?>
-                                                    </span>
+                                                </button>
                                                     <?php
                                                 }
                                                 ?>
@@ -487,8 +488,10 @@ WHERE
                                                 ?>
                                             </td>
                                             <td>
-                                                <a type="button" class="btn btn-info btn-rounded"  href="investigation_profile.php?id=<?php echo $investigation_info['id_case_has_investigation'] ?>">
-                                                    للتعديل
+                                                <a href="investigation_profile.php?id=<?php echo $investigation_info['id_case_has_investigation'] ?>">
+                                                    <button type="button" class="btn waves-effect waves-light btn-info">
+                                                        للتعديل
+                                                    </button>
                                                 </a>
                                             </td>
                                         </tr>
@@ -498,7 +501,7 @@ WHERE
                                     </tbody>
                                     <tfoot>
                                     <tr>
-                                        <th width="10%"></th>
+                                        <th width="10%">رقم الحصر </th>
                                         <th width="18%">الرقم القضائي </th>
                                         <th width="17%">وكيل النيابة </th>
                                         <th width="13%">التهمة </th>
@@ -582,29 +585,70 @@ WHERE
     });
 </script>
 <script>
+    function format(value) {
+        return '<div class="middle wrap col-sm-12"  >' + value + '</div>';
+    }
     $(document).ready(function() {
-        // Setup - add a text input to each footer cell
-        $('#datatable tfoot th').not('.unsearchable').each( function () {
-            var title = $(this).text();
-            $(this).html( '<input class="col-lg-12" type="text" placeholder="'+title+'" />' );
-        } );
+        $('#datatable').DataTable({
+            initComplete: function () {
+                this.api().columns(':eq(2),:eq(5)').every( function () {
+                    var column = this;
+                    var select = $('<select><option value=""></option></select>')
+                        .appendTo( $(column.footer()).empty() )
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
 
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                } );
+            },
+            pageLength: 10,
+            responsive: {
+                details: {
+                    type: 'column',
+                    target: 'tr'
+                }
+            },
+            order: [2, 'desc'],
+            dom: 'lfrtip',
+        });
+        $('#datatable tfoot th').not(':eq(2),:eq(5),:eq(6)').each(function() {
+            var title = $(this).text();
+            $(this).html('<input class="col-lg-12" type="text" placeholder="'+title+'" />');
+        });
         // DataTable
         var table = $('#datatable').DataTable();
-
         // Apply the search
-        table.columns().every( function () {
+        table.columns().every(function() {
             var that = this;
-
-            $( 'input', this.footer() ).on( 'keyup change', function () {
-                if ( that.search() !== this.value ) {
+            $('input', this.footer()).on('keyup change', function() {
+                if (that.search() !== this.value) {
                     that
-                        .search( this.value )
+                        .search(this.value)
                         .draw();
                 }
-            } );
-        } );
-    } );
+            });
+        });
+    });
+</script>
+<script>
+    function blink(selector){
+        $(selector).fadeOut('slow', function(){
+            $(this).fadeIn('slow', function(){
+                blink(this);
+            });
+        });
+    }
+
+    blink('.blink');
 </script>
 <?php
 include_once "layout/common_script.php";

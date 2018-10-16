@@ -1,3 +1,118 @@
+<div class="modal inmodal" id="add_charge" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">إضافة تهمة</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="php/add_charge.php">
+                    <div class="form-body">
+                        <div class="form-group row">
+                            <label for="charge_name" class="col-md-2 col-form-label">أسم التهمة</label>
+                            <div class="col-md-10">
+                                <div class="form-group has-danger">
+                                    <input required  type="text" name="charge_name" id="charge_name" class="form-control" placeholder="أسم التهمة">
+                                    <small class="form-control-feedback"> سوف يقوم النظام بإعتماد هذه التهمة في خلال 24 ساعة إلا أن تكون مكررة </small>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/row-->
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> تسجيل</button>
+                            <button class="btn btn-inverse" type="button" data-dismiss="modal">إلغاء</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="add_reason_to_done" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">إضافة سبب للبقاء</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="php/add_reason_to_done.php">
+                    <div class="form-body">
+                        <div class="form-group row">
+                            <label for="charge_name" class="col-md-2 col-form-label">أسم سبب البقاء</label>
+                            <div class="col-md-10">
+                                <div class="form-group has-danger">
+                                    <input required  type="text" name="reason_to_done_name" id="reason_to_done_name" class="form-control" placeholder="أسم سبب البقاء">
+                                    <small class="form-control-feedback"> سوف يقوم النظام بإعتماد هذا السبب في خلال 24 ساعة إلا أن يكون مكرراً </small>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/row-->
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> تسجيل</button>
+                            <button class="btn btn-inverse" type="button" data-dismiss="modal">إلغاء</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="add_prosecuter" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">إضافة عضو نيابة</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="php/add_prosecuter.php">
+                    <div class="form-body">
+                        <div class="form-group row">
+                            <label for="charge_name" class="col-md-2 col-form-label">أسم العضو</label>
+                            <div class="col-md-10">
+                                <div class="form-group has-danger">
+                                    <input required  type="text" name="prosecuter_name" id="prosecuter_name" class="form-control" placeholder="أسم العضو">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="pros_id" class="col-md-2 col-form-label">يتبع نيابة</label>
+                            <div class="col-md-10">
+                                <div class="form-group has-danger">
+                                    <select required name="pros_id" class="select2 form-control custom-select"  style="width: 100%; height:100%;">
+                                        <?php
+                                        $query = "SELECT
+  pros.id,
+  pros.name
+FROM
+  pros
+  INNER JOIN pros_has_users ON pros_has_users.pros_id = pros.id
+WHERE
+  pros_has_users.users_id = '$user_id'";
+                                        $results=mysqli_query($con, $query);
+                                        //loop
+                                        foreach ($results as $depart){
+                                            ?>
+                                            <option value="<?php echo $depart["id"];?>"><?php echo $depart["name"];?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/row-->
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> تسجيل</button>
+                            <button class="btn btn-inverse" type="button" data-dismiss="modal">إلغاء</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal inmodal" id="add_investigation_record" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content animated fadeIn">
@@ -91,10 +206,13 @@ WHERE
                                     <select multiple="multiple" class="form-control custom-select bootstrapDualListbox" name="charges[]">
                                         <?php
                                         $query = "SELECT
-                                                      charges.name AS charges_name,
-                                                      charges.id_charges
-                                                    FROM
-                                                      charges";
+  charges.id_charges,
+  charges.name AS charges_name
+FROM
+  charges
+WHERE
+  charges.status = 1 AND
+  charges.deleted = 0";
                                         $results=mysqli_query($con, $query);
                                         //loop
                                         foreach ($results as $charges){
@@ -119,7 +237,10 @@ WHERE
                                                       reason_to_done.id_reason_to_done,
                                                       reason_to_done.name AS reason_to_done_name
                                                     FROM
-                                                      reason_to_done";
+                                                      reason_to_done
+WHERE
+  reason_to_done.status = 1 AND
+  reason_to_done.deleted = 0";
                                         $results=mysqli_query($con, $query);
                                         //loop
                                         foreach ($results as $reason_to_done){

@@ -23,6 +23,26 @@
                                 <li><a href="investigation.php">حصر التحقيق</a></li>
                             </ul>
                         </li>
+                        <li>
+                            <a class="has-arrow waves-effect waves-light" href="settings.php" aria-expanded="false">
+                                <i class="mdi mdi-settings"></i>
+                                <span class="hide-menu">
+                                    الإعدادات
+                                </span>
+                            </a>
+                            <!--                            <ul aria-expanded="false" class="collapse">-->
+                            <!--                                <li><a href="possession.php">حيازة</a></li>-->
+                            <!--                            </ul>-->
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="charges_settings.php">إعدادات التهم</a></li>
+                            </ul>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="prosecutor_settings.php">إعدادات الإعضاء</a></li>
+                            </ul>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="reason_to_done_settings.php">إعدادات أسباب البقاء</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->

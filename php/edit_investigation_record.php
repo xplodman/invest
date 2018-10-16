@@ -71,7 +71,7 @@ if (empty($_POST['reason_to_done'])) {
 }
 
 mysqli_commit($con);
-header('Location: ../investigation_profile.php?id='.$investigation_id.'&backresult=1');
+header('Location: ../investigation_profile.php?backresult=1');
 exit;//if ($insert_case){
 //
 //    $max_investigation_id = mysqli_query($con, "SELECT MAX(id_case_has_investigation) FROM `case_has_investigation`");
