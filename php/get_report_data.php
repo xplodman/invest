@@ -10,9 +10,9 @@ if (isset($_POST['case_status']) AND !empty($_POST['case_status'])){
 //    echo '<pre>'; print_r($_POST['case_status']); echo '</pre>';
 }
 
-include_once "php/connection.php";
-include_once "php/check_authentication.php";
-include_once "php/functions.php";
+include_once "../php/connection.php";
+include_once "../php/check_authentication.php";
+include_once "../php/functions.php";
 $user_id=$_SESSION['cj_investigation']['id'];
 $user_nickname=$_SESSION['cj_investigation']['nickname'];
 $user_job=$_SESSION['cj_investigation']['job'];
@@ -52,8 +52,7 @@ if (isset($_POST['prosecutor']) AND !empty($_POST['prosecutor'])){
                     <td>
                         <?php
                         $prosecutor_id = $prosecutor_name_info['id'];
-
-                        $undone_Count_investigation = mysqli_query($con, "SELECT
+                        $undone_Count_investigation_query="SELECT
           Coalesce(Count(DISTINCT case_has_investigation.id_case_has_investigation), 0) AS undone_Count_investigation
           FROM
           case_has_investigation
@@ -61,7 +60,26 @@ if (isset($_POST['prosecutor']) AND !empty($_POST['prosecutor'])){
         WHERE
           case_has_investigation.status = 1 AND
           case_has_investigation.deleted = 0 AND
-          case_has_investigation.case_status_idcase_status = 2 AND prosecutor.id = '$prosecutor_id' GROUP BY prosecutor.name");
+          case_has_investigation.case_status_idcase_status = 2 AND prosecutor.id = '$prosecutor_id'";
+
+                        if ($_POST['all_in_year']==='1'){
+                            $undone_Count_investigation_query.=" AND YEAR(case_has_investigation.receive_date) = YEAR(CURDATE())";
+                        }else{
+                            if (isset($_POST['date_from']) AND !empty($_POST['date_from'])){
+
+                                $date_from = DateTime::createFromFormat('d/m/Y',mysqli_real_escape_string($con, $_POST['date_from']))->format("Y-n-j");
+                                $undone_Count_investigation_query.=" AND case_has_investigation.receive_date >= '$date_from'";
+
+                            }
+                            if (isset($_POST['date_to']) AND !empty($_POST['date_to'])){
+                                $date_to = DateTime::createFromFormat('d/m/Y',mysqli_real_escape_string($con, $_POST['date_to']))->format("Y-n-j");
+                                $undone_Count_investigation_query.=" AND case_has_investigation.receive_date <= '$date_to'";
+
+                            }
+                        }
+
+                        $undone_Count_investigation_query.=" GROUP BY prosecutor.name";
+                        $undone_Count_investigation = mysqli_query($con, $undone_Count_investigation_query)or die(mysqli_error($con));
 
                         $undone_Count_investigation_info = mysqli_fetch_assoc($undone_Count_investigation);
                         if($undone_Count_investigation_info['undone_Count_investigation'] == null){echo '0';}else{echo $undone_Count_investigation_info['undone_Count_investigation']; }
@@ -70,8 +88,7 @@ if (isset($_POST['prosecutor']) AND !empty($_POST['prosecutor'])){
                     <td>
                         <?php
                         $prosecutor_id = $prosecutor_name_info['id'];
-
-                        $done_Count_investigation = mysqli_query($con, "SELECT
+                        $done_Count_investigation_query="SELECT
           Coalesce(Count(DISTINCT case_has_investigation.id_case_has_investigation), 0) AS done_Count_investigation
           FROM
           case_has_investigation
@@ -79,7 +96,25 @@ if (isset($_POST['prosecutor']) AND !empty($_POST['prosecutor'])){
         WHERE
           case_has_investigation.status = 1 AND
           case_has_investigation.deleted = 0 AND
-          case_has_investigation.case_status_idcase_status = 1 AND prosecutor.id = '$prosecutor_id' GROUP BY prosecutor.name");
+          case_has_investigation.case_status_idcase_status = 1 AND prosecutor.id = '$prosecutor_id' ";
+
+
+                        if ($_POST['all_in_year']==='1'){
+                            $done_Count_investigation_query.=" AND YEAR(case_has_investigation.receive_date) = YEAR(CURDATE())";
+                        }else{
+                            if (isset($_POST['date_from']) AND !empty($_POST['date_from'])){
+
+                                $date_from = DateTime::createFromFormat('d/m/Y',mysqli_real_escape_string($con, $_POST['date_from']))->format("Y-n-j");
+                                $done_Count_investigation_query.=" AND case_has_investigation.receive_date >= '$date_from'";
+
+                            }
+                            if (isset($_POST['date_to']) AND !empty($_POST['date_to'])){
+                                $date_to = DateTime::createFromFormat('d/m/Y',mysqli_real_escape_string($con, $_POST['date_to']))->format("Y-n-j");
+                                $done_Count_investigation_query.=" AND case_has_investigation.receive_date <= '$date_to' ";
+                            }
+                        };
+
+                        $done_Count_investigation = mysqli_query($con, $done_Count_investigation_query)or die(mysqli_error($con));
 
                         $done_Count_investigation_info = mysqli_fetch_assoc($done_Count_investigation);
                         if($done_Count_investigation_info['done_Count_investigation'] == null){echo '0';}else{echo $done_Count_investigation_info['done_Count_investigation']; }

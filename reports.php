@@ -85,27 +85,27 @@ WHERE
                                         <input type="checkbox" id="all_prosecutor" class="filled-in chk-col-red"/>
                                         <label for="all_prosecutor">إختيار كل الأعضاء</label>
                                     </div>
-<!--                                    <div class="col-md-6">-->
-<!--                                        <div class="row">-->
-<!--                                            <div class="col-md-6">-->
-<!--                                                <div class="form-group has-danger">-->
-<!--                                                    <label for="date_from" class="control-label">تاريخ الورود من</label>-->
-<!--                                                    <input required type="text" name="date_from" id="date_from" class="form-control date_autoclose filters" placeholder="تاريخ الورود من">-->
-<!---->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <div class="col-md-6">-->
-<!--                                                <div class="form-group has-danger">-->
-<!--                                                    <label for="date_to" class="control-label">تاريخ الورود إلى</label>-->
-<!--                                                    <input required type="text" name="date_to" id="date_to" class="form-control date_autoclose filters" placeholder="تاريخ الورود إلى">-->
-<!---->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                        <input type="hidden" value="0" name="all_in_year" class="filled-in chk-col-red filters"/>-->
-<!--                                        <input type="checkbox" value="1" id="all_in_year" name="all_in_year" class="filled-in chk-col-red filters"/>-->
-<!--                                        <label for="all_in_year">داخل السنة بأكملها</label>-->
-<!--                                    </div>-->
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group has-danger">
+                                                    <label for="date_from" class="control-label">تاريخ الورود من</label>
+                                                    <input required type="text" name="date_from" id="date_from" class="form-control date_autoclose filters" placeholder="تاريخ الورود من">
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group has-danger">
+                                                    <label for="date_to" class="control-label">تاريخ الورود إلى</label>
+                                                    <input required type="text" name="date_to" id="date_to" class="form-control date_autoclose filters" placeholder="تاريخ الورود إلى">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" value="0" name="all_in_year" class="filled-in chk-col-red filters"/>
+                                        <input type="checkbox" value="1" id="all_in_year" name="all_in_year" class="filled-in chk-col-red filters"/>
+                                        <label for="all_in_year">داخل السنة بأكملها</label>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -244,7 +244,7 @@ WHERE
         var status = $("#status option:selected").val();
         $.ajax({
             type: "POST",
-            url: "get_report_data.php",
+            url: "php/get_report_data.php",
             data: form_data,
 
             success: function (data) {

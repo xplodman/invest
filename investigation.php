@@ -123,6 +123,10 @@ WHERE
                                 $case_status=$_POST['case_status'];
                                 if(trim($case_status) != ''){$investigation_query .= " AND case_status.idcase_status = '$case_status'";}
                             }
+                            if (!empty($_POST['receive_date'])) {
+                                $receive_date=date("Y-m-d", strtotime($_POST['receive_date']) );
+                                if(trim($receive_date) != ''){$investigation_query .= " AND case_has_investigation.receive_date = '$receive_date'";}
+                            }
                             $investigation_query .= " GROUP BY case.id";
                         }else{
                             $investigation_query="SELECT
@@ -172,7 +176,6 @@ GROUP BY
                                                 <input  type="number" name="investigation_year" id="investigation_year" class="form-control" placeholder="سنة" value="<?php if (!empty($_POST['investigation_year'])) {echo $_POST['investigation_year'];}?>">
                                             </div>
                                         </div>
-                                        <label for="example-search-input" class="col-md-2 col-form-label"></label>
                                         <label for="example-search-input" class="col-md-1 col-form-label">رقم القضية</label>
                                         <div class="col-md-1">
                                             <div class="form-group has-danger">
@@ -246,6 +249,11 @@ WHERE
                                                     }
                                                     ?>
                                                 </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group has-danger">
+                                                <input autocomplete="off" required type="text" name="receive_date" id="receive_date" class="form-control date_autoclose filters" placeholder="تاريخ الورود" value="<?php if (!empty($_POST['receive_date'])) {echo $_POST['receive_date'];}?>">
                                             </div>
                                         </div>
                                     </div>
@@ -399,14 +407,14 @@ WHERE
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="table-responsive">
+                            <h4 class="table-responsive">
                                 <table id="datatable" class="display table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                                     <thead>
                                     <tr>
                                         <th width="10%">رقم الحصر </th>
                                         <th width="18%">الرقم القضائي </th>
                                         <th class="selectable_column" width="17%">وكيل النيابة </th>
-                                        <th class="searchable_column" width="13%">التهمة </th>
+                                        <th class="searchable_column" width="5%">التهمة </th>
                                         <th width="20%">سبب البقاء </th>
                                         <th class="selectable_column" width="20%">حالة القضية </th>
                                         <th width="9%"></th><!--tools-->
@@ -447,11 +455,13 @@ WHERE
                                                 $color = "purple";
                                                 while ($reason_to_done_info = $reason_to_done->fetch_assoc()) {
                                                     ?>
-                                                    <button type="button" class="btn waves-effect waves-light btn-primary">
+                                                    <h4>
+                                                        <button type="button" class="btn waves-effect waves-light btn-primary">
                                                         <?php
                                                         echo $reason_to_done_info['charges_name']
                                                         ?>
                                                        </button>
+                                                    </h4>
                                                     <?php
                                                 }
                                                 ?>
@@ -476,11 +486,13 @@ WHERE
                                                 $color = "purple";
                                                 while ($reason_to_done_info = $reason_to_done->fetch_assoc()) {
                                                     ?>
-                                                <button type="button" class="btn waves-effect waves-light btn-danger">
-                                                        <?php
-                                                        echo $reason_to_done_info['reason_to_done_name']
-                                                        ?>
-                                                </button>
+                                                    <h4>
+                                                        <button type="button" class="btn waves-effect waves-light btn-danger">
+                                                            <?php
+                                                            echo $reason_to_done_info['reason_to_done_name']
+                                                            ?>
+                                                        </button>
+                                                    </h4>
                                                     <?php
                                                 }
                                                 ?>
@@ -507,7 +519,7 @@ WHERE
                                         <th width="10%">رقم الحصر </th>
                                         <th width="18%">الرقم القضائي </th>
                                         <th width="17%">وكيل النيابة </th>
-                                        <th width="13%">التهمة </th>
+                                        <th width="5%">التهمة </th>
                                         <th width="20%">سبب البقاء </th>
                                         <th width="20%">حالة القضية </th>
                                         <th class="unsearchable" width="9%"></th><!--tools-->

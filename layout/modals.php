@@ -135,6 +135,12 @@ WHERE
                                     <input required type="number" name="investigation_year" id="investigation_year" class="form-control" placeholder="سنة">
                                 </div>
                             </div>
+                            <label for="receive_date" class="col-md-2 col-form-label">تاريخ الورود</label>
+                            <div class="col-md-4">
+                                <div class="form-group has-danger">
+                                    <input required type="text" name="receive_date" id="receive_date" class="form-control date_autoclose filters" placeholder="تاريخ الورود">
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group row">
                             <label for="example-search-input" class="col-md-1 col-form-label">رقم القضية</label>

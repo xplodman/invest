@@ -14,8 +14,9 @@ $case_depart=mysqli_real_escape_string($con, $_POST['depart']);
 $prosecutor=mysqli_real_escape_string($con, $_POST['prosecutor']);
 $case_status=mysqli_real_escape_string($con, $_POST['case_status']);
 $notes=mysqli_real_escape_string($con, $_POST['notes']);
-
-$update_case_has_investigation= mysqli_query($con, "UPDATE case_has_investigation SET `investigation_number` = '$investigation_number', `investigation_year` = '$investigation_year', `case_status_idcase_status` = '$case_status', `prosecutor_id` = '$prosecutor', `notes` = '$notes', `updatedate` = NOW() WHERE id_case_has_investigation= $investigation_id;");
+$receive_date = DateTime::createFromFormat('d/m/Y',mysqli_real_escape_string($con, $_POST['receive_date']))->format("Y-n-j");
+echo $receive_date;
+$update_case_has_investigation= mysqli_query($con, "UPDATE case_has_investigation SET `investigation_number` = '$investigation_number', `investigation_year` = '$investigation_year', `case_status_idcase_status` = '$case_status', `prosecutor_id` = '$prosecutor', `notes` = '$notes', `receive_date` = '$receive_date', `updatedate` = NOW() WHERE id_case_has_investigation= $investigation_id;");
 
 if ($update_case_has_investigation === false) {
     header('Location: ../investigation.php?id='.$investigation_id.'&backresult=2'); //رقم الحصر مكرر

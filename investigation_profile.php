@@ -48,6 +48,8 @@ SELECT
   case_has_investigation.investigation_number,
   case_has_investigation.investigation_year,
   case_has_investigation.notes,
+  case_has_investigation.receive_date,
+  DATE_FORMAT(case_has_investigation.receive_date, '%e/%c/%Y') AS receive_date,
   `case`.case_number,
   `case`.case_year,
   depart.name AS depart_name,
@@ -292,7 +294,7 @@ WHERE
                                     </div>
                                     <!--/row-->
                                     <div class="row">
-                                        <div class="col-md-8">
+                                        <div class="col-md-5">
                                             <div class="form-group has-danger">
                                                 <label class="control-label">أسم العضو المعروض عليه القضية</label>
                                                 <select required name="prosecutor" class="select2 form-control custom-select"  style="width: 100%; height:100%;">
@@ -325,7 +327,7 @@ WHERE
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-5">
                                             <div class="form-group has-danger">
                                                 <label class="control-label">حالة القضية</label>
                                                 <select required name="case_status" class="select2 form-control custom-select"  style="width: 100%; height:100%;">
@@ -353,6 +355,12 @@ WHERE
                                                     }
                                                     ?>
                                                 </select>
+                                            </div>
+                                        </div
+                                        <div class="col-md-7">
+                                            <div class="form-group has-danger">
+                                                <label class="control-label">تاريخ الورود</label>
+                                                <input autocomplete="off" required type="text" name="receive_date" id="receive_date" class="form-control date_autoclose filters" placeholder="تاريخ الورود" value="<?php echo $investigation_info['receive_date'];?>">
                                             </div>
                                         </div>
                                     </div>
@@ -476,14 +484,6 @@ WHERE
                 tr.addClass('shown');
             }
         });
-    });
-</script>
-<script>
-    // Date Picker
-    jQuery('.date_autoclose').datepicker({
-        autoclose: true,
-        todayHighlight: true,
-        dateFormat: 'd-m-yy'
     });
 </script>
 <?php

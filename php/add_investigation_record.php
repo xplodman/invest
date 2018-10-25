@@ -9,6 +9,8 @@ $case_number=mysqli_real_escape_string($con, $_POST['case_number']);
 $case_year=mysqli_real_escape_string($con, $_POST['case_year']);
 $case_main_ledger=mysqli_real_escape_string($con, $_POST['case_main_ledger']);
 $case_depart=mysqli_real_escape_string($con, $_POST['case_depart']);
+$receive_date = DateTime::createFromFormat('d/m/Y',mysqli_real_escape_string($con, $_POST['receive_date']))->format("Y-m-d");
+
 if (isset($_POST['charges']) && !empty($_POST['charges'])) {
     foreach($_POST['charges'] AS $val) {
         $charges[] = mysqli_real_escape_string($con, $val);
@@ -37,7 +39,7 @@ if ($insert_case){
     $max_investigation_id = implode("", $max_investigation_id);
     $max_investigation_id = $max_investigation_id+1;
 
-    $insert_investigation = mysqli_query($con, "INSERT INTO `case_has_investigation` (`id_case_has_investigation`, `investigation_number`, `investigation_year`, `case_id`, `case_status_idcase_status`, `users_id`, `prosecutor_id`, `createdate`, `updatedate`, `status`, `deleted`, `notes`) VALUES ('$max_investigation_id', '$investigation_number', '$investigation_year', '$max_case_id', '$case_status', '$user_id', '$prosecutor', CURRENT_TIMESTAMP, NULL, '1', '0', '$notes')");
+    $insert_investigation = mysqli_query($con, "INSERT INTO `case_has_investigation` (`id_case_has_investigation`, `investigation_number`, `investigation_year`, `case_id`, `case_status_idcase_status`, `users_id`, `prosecutor_id`, `createdate`, `updatedate`, `status`, `deleted`, `notes`, `receive_date`) VALUES ('$max_investigation_id', '$investigation_number', '$investigation_year', '$max_case_id', '$case_status', '$user_id', '$prosecutor', CURRENT_TIMESTAMP, NULL, '1', '0', '$notes', '$receive_date')");
 
     if ($insert_investigation){
         if (isset($_POST['charges']) && !empty($_POST['charges'])) {
