@@ -297,7 +297,15 @@ WHERE
                                                 <label class="control-label">أسم العضو المعروض عليه القضية</label>
                                                 <select required name="prosecutor" class="select2 form-control custom-select"  style="width: 100%; height:100%;">
                                                     <?php
-                                                    $query = "SELECT * FROM prosecutor";
+                                                    $query = "SELECT
+  prosecutor.id,
+  prosecutor.name
+FROM
+  prosecutor
+  INNER JOIN pros ON prosecutor.pros_id = pros.id
+  INNER JOIN pros_has_users ON pros_has_users.pros_id = pros.id
+WHERE
+  pros_has_users.users_id = '$user_id' AND prosecutor.status = '1'";
                                                     $results=mysqli_query($con, $query);
                                                     //loop
                                                     foreach ($results as $prosecutor){

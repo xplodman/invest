@@ -329,7 +329,7 @@ FROM
   INNER JOIN pros ON prosecutor.pros_id = pros.id
   INNER JOIN pros_has_users ON pros_has_users.pros_id = pros.id
 WHERE
-  pros_has_users.users_id = '$user_id'";
+  pros_has_users.users_id = '$user_id' AND prosecutor.status = '1'";
                                                     $results=mysqli_query($con, $query);
                                                     //loop
                                                     foreach ($results as $prosecutor){
