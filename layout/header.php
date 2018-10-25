@@ -40,7 +40,7 @@
     <script src="assets/js/html5shiv.js"></script>
     <script src="assets/js/respond.min.js"></script>
     <!--c3 CSS -->
-    <link href="../assets/plugins/c3-master/c3.min.css" rel="stylesheet">
+    <link href="assets/plugins/c3-master/c3.min.css" rel="stylesheet">
 <![endif]-->
     <style type="text/css">
         input{
@@ -50,6 +50,11 @@
             font-family: "My Custom Font";
             src: url(assets/fonts/arabic.otf) format("truetype");
         }
+        .c3 text {
+            font-size:14px;
+            font-family: "My Custom Font";
+        }
+
         div , i , h1 , h2 , h3 , h4 , h5 {
             font-family: "My Custom Font";
         }
@@ -81,6 +86,10 @@
             /* display: none; <- Crashes Chrome on hover */
             -webkit-appearance: none;
             margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+        }
+        div.dt-buttons {
+            position: relative;
+            float: left;
         }
     </style>
 </head>

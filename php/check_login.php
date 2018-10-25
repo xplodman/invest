@@ -12,6 +12,7 @@ include_once "connection.php";
     $result = mysqli_query($con, "SELECT
   users.id,
   users.nickname,
+  role.id AS role_id,
   role.name AS role_name
 FROM
   users
@@ -25,6 +26,7 @@ Where users.username = '$username' And users.password = '$password'")or die(mysq
         $_SESSION['cj_investigation']['timestamp'] = time();
         $_SESSION['cj_investigation']['authenticate'] = "true";
         $_SESSION['cj_investigation']['id'] = $row['id'];
+        $_SESSION['cj_investigation']['role_id'] = $row['role_id'];
         $_SESSION['cj_investigation']['job'] = $row['role_name'];
         $_SESSION['cj_investigation']['nickname'] = $row['nickname'];
         header('Location: ../index.php');

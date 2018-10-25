@@ -46,11 +46,11 @@ include_once "php/check_authentication.php";
             <?php
             $charges_query="SELECT
   charges.id_charges,
-  charges.name
+  charges.name,
+  charges.status
 FROM
   charges
 WHERE
-  charges.status = 1 AND
   charges.deleted = 0
 ORDER BY 
   charges.name";
@@ -66,13 +66,23 @@ ORDER BY
                                     <thead>
                                     <tr>
                                         <th width="15%">الرقم الموحد</th>
-                                        <th width="85%">أسم التهمة</th>
+                                        <th width="65%">أسم التهمة</th>
+                                        <?php
+                                        if ($_SESSION['cj_investigation']['role_id']=='1'){
+                                            ?>
+                                            <th width="20%">تفعيل التهمة</th>
+                                            <?php
+                                        }
+                                        ?>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <?php
                                     $result = mysqli_query($con, $charges_query);
                                     while($charges_info = mysqli_fetch_assoc($result)) {
+                                        if ($_SESSION['cj_investigation']['role_id']!='1' & $charges_info['status']=='0'){
+                                            goto  end_while;
+                                        }
                                         ?>
                                         <tr data-child-value="<?php
                                         ?>">
@@ -82,15 +92,50 @@ ORDER BY
                                             <td>
                                                 <?php echo $charges_info['name']?>
                                             </td>
+                                            <?php
+                                            if ($_SESSION['cj_investigation']['role_id']=='1'){
+                                                ?>
+                                                <td>
+                                                    <?php
+                                                    if ($charges_info['status']=='1'){
+                                                        ?>
+                                                        <a href="php/change_charge_status.php?charge_id=<?php echo $charges_info['id_charges']."&".'status=0' ?>">
+                                                            <button type="button" class="btn waves-effect waves-light btn-danger">
+                                                                تعطيل
+                                                            </button>
+                                                        </a>
+                                                        <?php
+                                                    }elseif($charges_info['status']=='0'){
+                                                        ?>
+                                                        <a href="php/change_charge_status.php?charge_id=<?php echo $charges_info['id_charges']."&".'status=1' ?>">
+                                                            <button type="button" class="btn waves-effect waves-light btn-info">
+                                                                تفعيل
+                                                            </button>
+                                                        </a>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </td>
+                                                <?php
+                                            }
+                                            ?>
                                         </tr>
                                         <?php
+                                        end_while:
                                     }
                                     ?>
                                     </tbody>
                                     <tfoot>
                                     <tr>
                                         <th width="15%">الرقم الموحد</th>
-                                        <th width="85%">أسم التهمة</th>
+                                        <th width="65%">أسم التهمة</th>
+                                        <?php
+                                        if ($_SESSION['cj_investigation']['role_id']=='1'){
+                                            ?>
+                                            <th width="20%">تفعيل التهمة</th>
+                                            <?php
+                                        }
+                                        ?>
                                     </tr>
                                     </tfoot>
                                 </table>
@@ -200,7 +245,7 @@ ORDER BY
                     target: 'tr'
                 }
             },
-            order: [[ 1, "asc" ]],
+            order: [],
             dom: 'lfrtip',
         });
         $('#datatable tfoot th').not(':eq(2),:eq(5),:eq(6)').each(function() {

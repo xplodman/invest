@@ -293,7 +293,10 @@ WHERE
                                                       reason_to_done.id_reason_to_done,
                                                       reason_to_done.name AS reason_to_done_name
                                                     FROM
-                                                      reason_to_done";
+                                                      reason_to_done
+WHERE
+  reason_to_done.status = 1 AND
+  reason_to_done.deleted = 0";
                                                     $results=mysqli_query($con, $query);
                                                     //loop
                                                     foreach ($results as $reason_to_done){

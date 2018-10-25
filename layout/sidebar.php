@@ -43,6 +43,11 @@
                                 <li><a href="reason_to_done_settings.php">إعدادات أسباب البقاء</a></li>
                             </ul>
                         </li>
+                        <ul aria-expanded="false">
+                            <li><a href="reports.php">
+                                    التقارير
+                                </a></li>
+                        </ul>
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->

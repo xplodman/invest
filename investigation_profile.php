@@ -94,7 +94,7 @@ WHERE
                                 $result = mysqli_query($con, $investigation_query);
                                 $investigation_info = mysqli_fetch_assoc($result);
                                 ?>
-                            <form method="post" action="php/edit_prosecutor.php?id=<?php echo $_GET['id']; ?>">
+                            <form method="post" action="php/edit_investigation_record.php?id=<?php echo $_GET['id']; ?>">
 
                                 <input type="hidden" name="investigation_id" id="investigation_id" value="<?php echo $investigation_info['id_case_has_investigation']; ?>">
                                 <input type="hidden" name="case_id" id="case_id" value="<?php echo $investigation_info['case_id']; ?>">

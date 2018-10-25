@@ -46,11 +46,11 @@ include_once "php/check_authentication.php";
             <?php
             $reason_to_done_query="SELECT
   reason_to_done.id_reason_to_done,
-  reason_to_done.name
+  reason_to_done.name,
+  reason_to_done.status  
 FROM
   reason_to_done
 WHERE
-  reason_to_done.status = 1 AND
   reason_to_done.deleted = 0
 ORDER BY 
   reason_to_done.name";
@@ -66,7 +66,14 @@ ORDER BY
                                     <thead>
                                     <tr>
                                         <th width="15%">الرقم الموحد</th>
-                                        <th width="85%">أسم سبب البقاء</th>
+                                        <th width="65%">أسم سبب البقاء</th>
+                                        <?php
+                                        if ($_SESSION['cj_investigation']['role_id']=='1'){
+                                            ?>
+                                            <th width="20%">تفعيل سبب البقاء</th>
+                                            <?php
+                                        }
+                                        ?>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -82,6 +89,33 @@ ORDER BY
                                             <td>
                                                 <?php echo $reason_to_done_info['name']?>
                                             </td>
+                                            <?php
+                                            if ($_SESSION['cj_investigation']['role_id']=='1'){
+                                                ?>
+                                                <td>
+                                                    <?php
+                                                    if ($reason_to_done_info['status']=='1'){
+                                                        ?>
+                                                        <a href="php/change_reason_to_done_status.php?reason_to_done_id=<?php echo $reason_to_done_info['id_reason_to_done']."&".'status=0' ?>">
+                                                            <button type="button" class="btn waves-effect waves-light btn-danger">
+                                                                تعطيل
+                                                            </button>
+                                                        </a>
+                                                        <?php
+                                                    }elseif($reason_to_done_info['status']=='0'){
+                                                        ?>
+                                                        <a href="php/change_reason_to_done_status.php?reason_to_done_id=<?php echo $reason_to_done_info['id_reason_to_done']."&".'status=1' ?>">
+                                                            <button type="button" class="btn waves-effect waves-light btn-info">
+                                                                تفعيل
+                                                            </button>
+                                                        </a>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </td>
+                                                <?php
+                                            }
+                                            ?>
                                         </tr>
                                         <?php
                                     }
@@ -90,7 +124,14 @@ ORDER BY
                                     <tfoot>
                                     <tr>
                                         <th width="15%">الرقم الموحد</th>
-                                        <th width="85%">أسم سبب البقاء</th>
+                                        <th width="65%">أسم سبب البقاء</th>
+                                        <?php
+                                        if ($_SESSION['cj_investigation']['role_id']=='1'){
+                                            ?>
+                                            <th width="20%">تفعيل سبب البقاء</th>
+                                            <?php
+                                        }
+                                        ?>
                                     </tr>
                                     </tfoot>
                                 </table>
@@ -174,7 +215,7 @@ ORDER BY
     $(document).ready(function() {
         $('#datatable').DataTable({
             initComplete: function () {
-                this.api().columns(':eq(2),:eq(5)').every( function () {
+                this.api().columns(':eq(3),:eq(5)').every( function () {
                     var column = this;
                     var select = $('<select><option value=""></option></select>')
                         .appendTo( $(column.footer()).empty() )
@@ -203,7 +244,7 @@ ORDER BY
             order: [[ 1, "asc" ]],
             dom: 'lfrtip',
         });
-        $('#datatable tfoot th').not(':eq(2),:eq(5),:eq(6)').each(function() {
+        $('#datatable tfoot th').not(':eq(3),:eq(5),:eq(6)').each(function() {
             var title = $(this).text();
             $(this).html('<input class="col-lg-12" type="text" placeholder="'+title+'" />');
         });

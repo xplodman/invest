@@ -232,6 +232,15 @@
     $(".select2").select2();
     $(".bootstrapDualListbox").bootstrapDualListbox();
 </script>
+<script>
+    jQuery('.date_autoclose').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        dateFormat: 'd-m-yy',
+        showWeek: true,
+        firstDay: 1
+    });
+</script>
 <?php
 mysqli_close($con);
 ?>
