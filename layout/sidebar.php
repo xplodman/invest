@@ -16,9 +16,6 @@
                                     الدفاتر
                                 </span>
                             </a>
-<!--                            <ul aria-expanded="false" class="collapse">-->
-<!--                                <li><a href="possession.php">حيازة</a></li>-->
-<!--                            </ul>-->
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="investigation.php">حصر التحقيق</a></li>
                             </ul>
@@ -30,9 +27,6 @@
                                     الإعدادات
                                 </span>
                             </a>
-                            <!--                            <ul aria-expanded="false" class="collapse">-->
-                            <!--                                <li><a href="possession.php">حيازة</a></li>-->
-                            <!--                            </ul>-->
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="charges_settings.php">إعدادات التهم</a></li>
                             </ul>
@@ -43,11 +37,23 @@
                                 <li><a href="reason_to_done_settings.php">إعدادات أسباب البقاء</a></li>
                             </ul>
                         </li>
-                        <ul aria-expanded="false">
-                            <li><a href="reports.php">
+                        <li>
+                            <a class="has-arrow waves-effect waves-light" aria-expanded="false">
+                                <i class="mdi mdi-file-chart"></i>
+                                <span class="hide-menu">
                                     التقارير
-                                </a></li>
-                        </ul>
+                                </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="percentage_report.php">تقرير نسبة الإنجاز</a></li>
+                            </ul>
+<!--                            <ul aria-expanded="false" class="collapse">-->
+<!--                                <li><a href="charges_report.php">تقرير التهم</a></li>-->
+<!--                            </ul>-->
+<!--                            <ul aria-expanded="false" class="collapse">-->
+<!--                                <li><a href="reason_to_done_settings.php">إعدادات أسباب البقاء</a></li>-->
+<!--                            </ul>-->
+                        </li>
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->

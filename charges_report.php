@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="rtl">
 <?php
-$pageTitle = 'التقارير';
+$pageTitle = 'تقرير التهم';
 include_once "layout/header.php";
 include_once "php/check_authentication.php";
 include_once "php/functions.php";
@@ -244,7 +244,7 @@ WHERE
         var status = $("#status option:selected").val();
         $.ajax({
             type: "POST",
-            url: "php/get_report_data.php",
+            url: "php/get_charges_report_data.php",
             data: form_data,
 
             success: function (data) {

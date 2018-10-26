@@ -124,7 +124,7 @@ WHERE
                                 if(trim($case_status) != ''){$investigation_query .= " AND case_status.idcase_status = '$case_status'";}
                             }
                             if (!empty($_POST['receive_date'])) {
-                                $receive_date=date("Y-m-d", strtotime($_POST['receive_date']) );
+                                $receive_date = DateTime::createFromFormat('d/m/Y',mysqli_real_escape_string($con, $_POST['receive_date']))->format("Y-n-j");
                                 if(trim($receive_date) != ''){$investigation_query .= " AND case_has_investigation.receive_date = '$receive_date'";}
                             }
                             $investigation_query .= " GROUP BY case.id";
