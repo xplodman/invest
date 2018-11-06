@@ -253,7 +253,7 @@ WHERE
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group has-danger">
-                                                <input autocomplete="off" required type="text" name="receive_date" id="receive_date" class="form-control date_autoclose filters" placeholder="تاريخ الورود" value="<?php if (!empty($_POST['receive_date'])) {echo $_POST['receive_date'];}?>">
+                                                <input autocomplete="off" type="text" name="receive_date" id="receive_date" class="form-control date_autoclose filters" placeholder="تاريخ الورود" value="<?php if (!empty($_POST['receive_date'])) {echo $_POST['receive_date'];}?>">
                                             </div>
                                         </div>
                                     </div>

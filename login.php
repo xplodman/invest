@@ -28,11 +28,11 @@ include_once "layout/header.php";
                         <div class="form-group ">
                             <div class="col-xs-12">
                                 <input class="form-control" type="text" required="" placeholder="Username" name="username" value="<?php
-                                if (isset($_SESSION['cj_investigation']['username'])){echo $_SESSION['cj_investigation']['username'];}?>" oninvalid="this.setCustomValidity('هذا الحقل إجباري')" oninput="setCustomValidity('')"> </div>
+                                if (isset($_SESSION['cj_investigation']['username'])){echo $_SESSION['cj_investigation']['username'];}?>" oninvalid="this.setCustomValidity('هذا الحقل إجباري')" oninput="setCustomValidity('')" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" > </div>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-12">
-                                <input class="form-control" type="password" required="" placeholder="Password" name="password" oninvalid="this.setCustomValidity('هذا الحقل إجباري')" oninput="setCustomValidity('')"> </div>
+                                <input class="form-control" type="password" required="" placeholder="Password" name="password" oninvalid="this.setCustomValidity('هذا الحقل إجباري')" oninput="setCustomValidity('')" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" > </div>
                         </div>
                         <div class="form-group text-center">
                             <div class="col-xs-12 p-b-20">

@@ -21,6 +21,26 @@
                             </ul>
                         </li>
                         <li>
+                            <a class="has-arrow waves-effect waves-light" aria-expanded="false">
+                                <i class="mdi mdi-file-chart"></i>
+                                <span class="hide-menu">
+                                    التقارير
+                                </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="percentage_report.php">تقرير نسبة الإنجاز</a></li>
+                            </ul>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="reason_to_done_report.php">تقرير بأسباب البقاء</a></li>
+                            </ul>
+<!--                            <ul aria-expanded="false" class="collapse">-->
+<!--                                <li><a href="charges_report.php">تقرير التهم</a></li>-->
+<!--                            </ul>-->
+<!--                            <ul aria-expanded="false" class="collapse">-->
+<!--                                <li><a href="reason_to_done_settings.php">إعدادات أسباب البقاء</a></li>-->
+<!--                            </ul>-->
+                        </li>
+                        <li>
                             <a class="has-arrow waves-effect waves-light" href="settings.php" aria-expanded="false">
                                 <i class="mdi mdi-settings"></i>
                                 <span class="hide-menu">
@@ -36,23 +56,6 @@
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="reason_to_done_settings.php">إعدادات أسباب البقاء</a></li>
                             </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow waves-effect waves-light" aria-expanded="false">
-                                <i class="mdi mdi-file-chart"></i>
-                                <span class="hide-menu">
-                                    التقارير
-                                </span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="percentage_report.php">تقرير نسبة الإنجاز</a></li>
-                            </ul>
-<!--                            <ul aria-expanded="false" class="collapse">-->
-<!--                                <li><a href="charges_report.php">تقرير التهم</a></li>-->
-<!--                            </ul>-->
-<!--                            <ul aria-expanded="false" class="collapse">-->
-<!--                                <li><a href="reason_to_done_settings.php">إعدادات أسباب البقاء</a></li>-->
-<!--                            </ul>-->
                         </li>
                     </ul>
                 </nav>

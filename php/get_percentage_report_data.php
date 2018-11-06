@@ -144,19 +144,17 @@ if (isset($_POST['prosecutor']) AND !empty($_POST['prosecutor'])){
 }
 ?>
 <script>
-    $(document).ready(function() {
-        $('#datatable').DataTable({
-            pageLength: 10,
-            responsive: {
-                details: {
-                    type: 'column',
-                    target: 'tr'
-                }
-            },
-            dom: 'B',
-            buttons: [
-                'excel'
-            ]
-        });
+    $('#datatable').DataTable({
+        pageLength: 10,
+        responsive: {
+            details: {
+                type: 'column',
+                target: 'tr'
+            }
+        },
+        dom: 'B',
+        buttons: [
+            'excel'
+        ]
     });
 </script>
