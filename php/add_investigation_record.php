@@ -48,6 +48,7 @@ if ($insert_case){
             $max_case_has_investigation_has_charges_id = implode("", $max_case_has_investigation_has_charges_id);
             $max_case_has_investigation_has_charges_id = $max_case_has_investigation_has_charges_id+1;
 
+			
             $len_charges =  count($charges);
             for($y=0 ; $y < $len_charges ; $y++)  // insert into case_has_investigation_has_charges
             {

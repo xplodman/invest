@@ -127,7 +127,7 @@ WHERE
                                 $receive_date = DateTime::createFromFormat('d/m/Y',mysqli_real_escape_string($con, $_POST['receive_date']))->format("Y-n-j");
                                 if(trim($receive_date) != ''){$investigation_query .= " AND case_has_investigation.receive_date = '$receive_date'";}
                             }
-                            $investigation_query .= " GROUP BY case.id";
+                            $investigation_query .= " GROUP BY case.id ORDER BY case_has_investigation.investigation_year DESC, case_has_investigation.investigation_number DESC";
                         }else{
                             $investigation_query="SELECT
   case_has_investigation.investigation_number,
@@ -153,13 +153,15 @@ FROM
   INNER JOIN pros ON depart.pros_id = pros.id
   INNER JOIN pros_has_users ON pros_has_users.pros_id = pros.id
   INNER JOIN case_has_investigation_has_charges ON case_has_investigation_has_charges.case_has_investigation_id_case_has_investigation = case_has_investigation.id_case_has_investigation
-
 WHERE
   case_has_investigation.status = 1 AND
   case_has_investigation.deleted = 0 AND
   pros_has_users.users_id = '$user_id'
 GROUP BY 
-  `case`.id";
+  `case`.id
+ORDER BY
+  case_has_investigation.investigation_year DESC,
+  case_has_investigation.investigation_number DESC";
                         }?>
                         <div class="collapse card-body" id="search">
                             <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
@@ -451,7 +453,9 @@ FROM
 WHERE
   case_has_investigation_has_charges.case_has_investigation_id_case_has_investigation = $investigation_info[id_case_has_investigation] AND
   case_has_investigation_has_charges.status = 1 AND
-  case_has_investigation_has_charges.deleted = 0");
+  case_has_investigation_has_charges.deleted = 0
+GROUP BY
+  case_has_investigation_has_charges.case_has_investigation_has_charges_id");
                                                 $color = "purple";
                                                 while ($reason_to_done_info = $reason_to_done->fetch_assoc()) {
                                                     ?>
@@ -632,7 +636,7 @@ WHERE
                     target: 'tr'
                 }
             },
-            order: [2, 'desc'],
+            order: [],
             dom: 'lfrtip',
         });
         $('#datatable tfoot th').not(':eq(2),:eq(5),:eq(6)').each(function() {
