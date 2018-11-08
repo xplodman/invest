@@ -209,7 +209,7 @@ WHERE
                             <div class="col-md-12">
                                 <div class="form-group has-danger">
                                     <label class="control-label">التهم</label>
-                                    <select multiple="multiple" class="form-control custom-select bootstrapDualListbox" name="charges[]">
+                                    <select multiple="multiple" class="form-control custom-select select2" name="charges[]" style="width: 100%; height:100%;">
                                         <?php
                                         $query = "SELECT
   charges.id_charges,
@@ -237,7 +237,7 @@ WHERE
                             <div class="col-md-12">
                                 <div class="form-group has-danger">
                                     <label class="control-label">سبب البقاء</label>
-                                    <select multiple="multiple" class="form-control custom-select bootstrapDualListbox" name="reason_to_done[]">
+                                    <select multiple="multiple" class="form-control custom-select select2" name="reason_to_done[]" style="width: 100%; height:100%;">
                                         <?php
                                         $query = "SELECT
                                                       reason_to_done.id_reason_to_done,
