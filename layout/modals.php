@@ -121,7 +121,7 @@ WHERE
                 <h4 class="modal-title">إضافة قيد</h4>
             </div>
             <div class="modal-body">
-                <form method="post" action="php/add_investigation_record.php">
+                <form method="get" action="php/add_investigation_record.php">
                     <div class="form-body">
                         <div class="form-group row">
                             <label for="example-search-input" class="col-md-1 col-form-label">رقم الحصر</label>

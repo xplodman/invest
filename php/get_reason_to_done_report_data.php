@@ -148,7 +148,7 @@ WHERE
 ?>
 <script>
     $('#datatable2').DataTable({
-        pageLength: 10,
+        pageLength: 1000,
         responsive: {
             details: {
                 type: 'column',

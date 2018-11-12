@@ -219,26 +219,26 @@ GROUP BY
                             </div>
                         </div>
                     </div>
-<!--                    <div class="col-lg-12">-->
-<!--                        <div class="card">-->
-<!--                            <div class="card-body">-->
-<!--                                <div class="d-flex">-->
-<!--                                    <div>-->
-<!--                                        <h3 class="card-title m-b-5"><span class="lstick"></span>إحصائية لدفتر حصر التحقيق لسنة --><?php //echo date('Y') ?><!-- مصنفه بأسم عضو النيابة</h3>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="">-->
-<!--                                <div class="ibox float-e-margins">-->
-<!--                                    <div class="ibox-content">-->
-<!--                                        <div id="collapseOne" class="panel-collapse collapse in">-->
-<!--                                            <div id="chart7" dir="ltr"></div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div>
+                                        <h3 class="card-title m-b-5"><span class="lstick"></span>إحصائية لدفتر حصر التحقيق لسنة <?php echo date('Y') ?> مصنفه بأسم عضو النيابة</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-content">
+                                        <div id="collapseOne" class="panel-collapse collapse in">
+                                            <div id="chart7" dir="ltr"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- ============================================================== -->
@@ -387,19 +387,70 @@ ORDER BY Count_reason_to_done DESC LIMIT 10";
             data: {
                 x : 'x',
                 columns: [
-                    ['x', 'أحمد الخولي', 'العسيلي'],
-                    ['تم التصرف', 10,20],
-                    ['متداول', 12, 10],
+                    <?php
+                    $x_query=mysqli_query($con, "SELECT
+  prosecutor.id,
+  prosecutor.name
+FROM
+  prosecutor
+  INNER JOIN pros ON prosecutor.pros_id = pros.id
+  INNER JOIN pros_has_users ON pros_has_users.pros_id = pros.id
+WHERE
+  pros_has_users.users_id = '2' AND prosecutor.status = '1'");
+
+                    $x="['x'";
+                    $y="['متداول'";
+                    $z="['تم التصرف'";
+                    while($x_result = mysqli_fetch_assoc($x_query)) {
+                        $x.=",'".$x_result['name']."'";
+
+                        $y_query=mysqli_query($con, "SELECT
+          Coalesce(Count(DISTINCT case_has_investigation.id_case_has_investigation), 0) AS undone_Count_investigation
+          FROM
+          case_has_investigation
+          INNER JOIN prosecutor ON case_has_investigation.prosecutor_id = prosecutor.id
+        WHERE
+          case_has_investigation.status = 1 AND
+          case_has_investigation.deleted = 0 AND
+          case_has_investigation.case_status_idcase_status = 2 AND prosecutor.id = '$x_result[id]'");
+                        $y_result = mysqli_fetch_assoc($y_query);
+                        $y.=",'".$y_result['undone_Count_investigation']."'";
+
+                        $z_query=mysqli_query($con, "SELECT
+          Coalesce(Count(DISTINCT case_has_investigation.id_case_has_investigation), 0) AS done_Count_investigation
+          FROM
+          case_has_investigation
+          INNER JOIN prosecutor ON case_has_investigation.prosecutor_id = prosecutor.id
+        WHERE
+          case_has_investigation.status = 1 AND
+          case_has_investigation.deleted = 0 AND
+          case_has_investigation.case_status_idcase_status = 1 AND prosecutor.id = '$x_result[id]'");
+                        $z_result = mysqli_fetch_assoc($z_query);
+                        $z.=",'".$z_result['done_Count_investigation']."'";
+
+
+                    }
+                    $x.="],";
+                    $y.="],";
+                    $z.="],";
+                    echo $x;
+                    echo $y;
+                    echo $z;
+                    ?>
                 ],
                 type: 'bar',
                 groups: [
-                    ['Renew', 'Return', 'Sign Up']
+                    ['متداول', 'تم التصرف']
                 ],
-                labels: true
+                labels: true,
             },
             axis: {
                 x: {
-                    type: 'category' // this is needed to load string x value
+                    type: 'category', // this is needed to load string x value
+                    tick: {
+                        rotate: '45',
+                        multiline: false
+                    }
                 }
             },
             grid: {

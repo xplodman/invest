@@ -43,6 +43,9 @@
     <link href="assets/plugins/c3-master/c3.min.css" rel="stylesheet">
 <![endif]-->
     <style type="text/css">
+        body{
+            zoom: 90%;
+        }
         input{
             text-align:center;
         }

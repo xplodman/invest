@@ -43,7 +43,7 @@ include_once "php/check_authentication.php";
             <!-- search form -->
             <!-- ============================================================== -->
             <?php
-                $investigation_query="
+            $investigation_query="
 SELECT
   case_has_investigation.investigation_number,
   case_has_investigation.investigation_year,
@@ -92,10 +92,10 @@ WHERE
                             </div>
                         </a>
                         <div class="card-body">
-                                <?php
-                                $result = mysqli_query($con, $investigation_query);
-                                $investigation_info = mysqli_fetch_assoc($result);
-                                ?>
+                            <?php
+                            $result = mysqli_query($con, $investigation_query);
+                            $investigation_info = mysqli_fetch_assoc($result);
+                            ?>
                             <form method="post" action="php/edit_investigation_record.php?id=<?php echo $_GET['id']; ?>">
 
                                 <input type="hidden" name="investigation_id" id="investigation_id" value="<?php echo $investigation_info['id_case_has_investigation']; ?>">
@@ -188,7 +188,7 @@ WHERE
                                         <div class="col-md-6">
                                             <div class="form-group has-danger">
                                                 <label class="control-label">التهم</label>
-                                                <select multiple="multiple" class="form-control custom-select bootstrapDualListbox" name="charges[]">
+                                                <select multiple="multiple" class="form-control custom-select select2" name="charges[]" style="width: 100%; height:100%;" required>
                                                     <?php
                                                     $query = "SELECT
   charges.name AS charges_name,
@@ -240,7 +240,7 @@ WHERE
                                         <div class="col-md-6">
                                             <div class="form-group has-danger">
                                                 <label class="control-label">سبب البقاء</label>
-                                                <select multiple="multiple" class="form-control custom-select bootstrapDualListbox" name="reason_to_done[]">
+                                                <select multiple="multiple" class="form-control custom-select select2" name="reason_to_done[]" style="width: 100%; height:100%;">
                                                     <?php
                                                     $query = "SELECT
   reason_to_done.id_reason_to_done,
