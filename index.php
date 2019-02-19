@@ -396,7 +396,7 @@ FROM
   INNER JOIN pros ON prosecutor.pros_id = pros.id
   INNER JOIN pros_has_users ON pros_has_users.pros_id = pros.id
 WHERE
-  pros_has_users.users_id = '2' AND prosecutor.status = '1'");
+  pros_has_users.users_id = '$user_id' AND prosecutor.status = '1'");
 
                     $x="['x'";
                     $y="['متداول'";

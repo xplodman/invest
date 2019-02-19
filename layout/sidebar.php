@@ -56,6 +56,9 @@
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="reason_to_done_settings.php">إعدادات أسباب البقاء</a></li>
                             </ul>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="actions_settings.php">إعدادات التصرفات</a></li>
+                            </ul>
                         </li>
                     </ul>
                 </nav>

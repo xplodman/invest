@@ -29,8 +29,17 @@ Where users.username = '$username' And users.password = '$password'")or die(mysq
         $_SESSION['cj_investigation']['role_id'] = $row['role_id'];
         $_SESSION['cj_investigation']['job'] = $row['role_name'];
         $_SESSION['cj_investigation']['nickname'] = $row['nickname'];
-        header('Location: ../index.php');
-        exit;
+        if($row['role_id']>5 & $row['role_id']<9){
+            header('Location: ../overall_pros/index.php');
+            exit;
+        }elseif($row['role_id']>9){
+            header('Location: ../appeal_pros/index.php');
+            exit;
+        }else{
+            header('Location: ../index.php');
+            exit;
+        }
+
     } else {
         header('Location: ../login.php?backresult=0');
         $_SESSION['cj_investigation']['username'] = $username;

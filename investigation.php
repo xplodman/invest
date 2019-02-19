@@ -67,7 +67,11 @@ include_once "php/check_authentication.php";
   prosecutor.name AS prosecutor_name,
   case_has_investigation.id_case_has_investigation,
   case_has_investigation.createdate,
-  case_status.name AS case_status_name
+  case_status.name AS case_status_name,
+  initial_action.initial_action_id,
+  initial_action.initial_action_name,
+  final_action.final_action_id,
+  final_action.final_action_name
 FROM
   case_has_investigation
   INNER JOIN `case` ON case_has_investigation.case_id = `case`.id
@@ -78,7 +82,11 @@ FROM
   INNER JOIN case_status ON case_has_investigation.case_status_idcase_status = case_status.idcase_status
   INNER JOIN pros ON depart.pros_id = pros.id
   INNER JOIN pros_has_users ON pros_has_users.pros_id = pros.id
-  INNER JOIN case_has_investigation_has_charges ON case_has_investigation_has_charges.case_has_investigation_id_case_has_investigation = case_has_investigation.id_case_has_investigation
+  INNER JOIN case_has_investigation_has_charges ON
+    case_has_investigation_has_charges.case_has_investigation_id_case_has_investigation =
+    case_has_investigation.id_case_has_investigation
+  LEFT JOIN final_action ON case_has_investigation.final_action_id = final_action.final_action_id
+  LEFT JOIN initial_action ON case_has_investigation.initial_action_id = initial_action.initial_action_id
 WHERE
   case_has_investigation.status = 1 AND
   case_has_investigation.deleted = 0 AND
@@ -123,6 +131,22 @@ WHERE
                                 $case_status=$_POST['case_status'];
                                 if(trim($case_status) != ''){$investigation_query .= " AND case_status.idcase_status = '$case_status'";}
                             }
+                            if (!empty($_POST['initial_action'])) {
+                                $initial_action=$_POST['initial_action'];
+                                if(trim($initial_action) != ''){$investigation_query .= " AND initial_action.initial_action_id = '$initial_action'";}
+                            }
+                            if (!empty($_POST['final_action'])) {
+                                $final_action=$_POST['final_action'];
+                                if(trim($final_action) != ''){$investigation_query .= " AND final_action.final_action_id = '$final_action'";}
+                            }
+                            if (!empty($_POST['plaintiff'])) {
+                                $plaintiff=$_POST['plaintiff'];
+                                if(trim($plaintiff) != ''){$investigation_query .= " AND case_has_investigation.plaintiff = '$plaintiff'";}
+                            }
+                            if (!empty($_POST['defendant'])) {
+                                $defendant=$_POST['defendant'];
+                                if(trim($defendant) != ''){$investigation_query .= " AND case_has_investigation.defendant = '$defendant'";}
+                            }
                             if (!empty($_POST['receive_date'])) {
                                 $receive_date = DateTime::createFromFormat('d/m/Y',mysqli_real_escape_string($con, $_POST['receive_date']))->format("Y-n-j");
                                 if(trim($receive_date) != ''){$investigation_query .= " AND case_has_investigation.receive_date = '$receive_date'";}
@@ -141,7 +165,11 @@ WHERE
   prosecutor.name AS prosecutor_name,
   case_has_investigation.id_case_has_investigation,
   case_has_investigation.createdate,
-  case_status.name AS case_status_name
+  case_status.name AS case_status_name,
+  initial_action.initial_action_id,
+  initial_action.initial_action_name,
+  final_action.final_action_id,
+  final_action.final_action_name
 FROM
   case_has_investigation
   INNER JOIN `case` ON case_has_investigation.case_id = `case`.id
@@ -152,7 +180,11 @@ FROM
   INNER JOIN case_status ON case_has_investigation.case_status_idcase_status = case_status.idcase_status
   INNER JOIN pros ON depart.pros_id = pros.id
   INNER JOIN pros_has_users ON pros_has_users.pros_id = pros.id
-  INNER JOIN case_has_investigation_has_charges ON case_has_investigation_has_charges.case_has_investigation_id_case_has_investigation = case_has_investigation.id_case_has_investigation
+  INNER JOIN case_has_investigation_has_charges ON
+    case_has_investigation_has_charges.case_has_investigation_id_case_has_investigation =
+    case_has_investigation.id_case_has_investigation
+  LEFT JOIN final_action ON case_has_investigation.final_action_id = final_action.final_action_id
+  LEFT JOIN initial_action ON case_has_investigation.initial_action_id = initial_action.initial_action_id
 WHERE
   case_has_investigation.status = 1 AND
   case_has_investigation.deleted = 0 AND
@@ -388,6 +420,82 @@ WHERE
                                                 </select>
                                             </div>
                                         </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group has-danger">
+                                                <label class="control-label">التصرف الجزئي</label>
+                                                <select  name="initial_action" class="select2 form-control custom-select"  style="width: 100%; height:100%;">
+                                                    <option value="" disabled selected></option>
+                                                    <?php
+                                                    $query = "SELECT
+  initial_action.initial_action_id,
+  initial_action.initial_action_name
+FROM
+  initial_action
+WHERE
+  initial_action.status = 1 AND
+  initial_action.deleted = 0";
+                                                    $results=mysqli_query($con, $query);
+                                                    //loop
+                                                    foreach ($results as $initial_action){
+                                                        ?>
+                                                        <option value="<?php echo $initial_action["initial_action_id"];?>"
+                                                            <?php
+                                                            if (!empty($_POST['initial_action'])) {
+                                                                if($initial_action['initial_action_id']==$_POST['initial_action']){
+                                                                    echo 'selected="selected"';
+                                                                }
+                                                            }?>
+                                                        ><?php echo $initial_action["initial_action_name"];?></option>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group has-danger">
+                                                <label class="control-label">التصرف النهائي</label>
+                                                <select  name="final_action" class="select2 form-control custom-select"  style="width: 100%; height:100%;">
+                                                    <option value="" disabled selected></option>
+                                                    <?php
+                                                    $query = "SELECT
+  final_action.final_action_id,
+  final_action.final_action_name
+FROM
+  final_action
+WHERE
+  final_action.status = 1 AND
+  final_action.deleted = 0";
+                                                    $results=mysqli_query($con, $query);
+                                                    //loop
+                                                    foreach ($results as $final_action){
+                                                        ?>
+                                                        <option value="<?php echo $final_action["final_action_id"];?>"
+                                                            <?php
+                                                            if (!empty($_POST['final_action'])) {
+                                                                if($final_action['final_action_id']==$_POST['final_action']){
+                                                                    echo 'selected="selected"';
+                                                                }
+                                                            }?>
+                                                        ><?php echo $final_action["final_action_name"];?></option>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group has-danger">
+                                                <label class="control-label">شكوى /</label>
+                                                <input type="text" name="plaintiff" id="plaintiff" class="form-control" placeholder="شكوى /" value="<?php if (!empty($_POST['plaintiff'])) {echo $_POST['plaintiff'];}?>">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group has-danger">
+                                                <label class="control-label">ضد /</label>
+                                                <input type="text" name="defendant" id="defendant" class="form-control" placeholder="ضد /" value="<?php if (!empty($_POST['defendant'])) {echo $_POST['defendant'];}?>">
+                                            </div>
+                                        </div>
                                     </div>
                                     <!--/row-->
                                     <div class="form-actions">
@@ -414,12 +522,13 @@ WHERE
                                     <thead>
                                     <tr>
                                         <th width="10%">رقم الحصر </th>
-                                        <th width="18%">الرقم القضائي </th>
+                                        <th width="10%">الرقم القضائي </th>
                                         <th class="selectable_column" width="17%">وكيل النيابة </th>
                                         <th class="searchable_column" width="5%">التهمة </th>
                                         <th width="20%">سبب البقاء </th>
                                         <th class="selectable_column" width="20%">حالة القضية </th>
-                                        <th width="9%"></th><!--tools-->
+                                        <th class="selectable_column" width="20%">التصرف المبدئي </th>
+                                        <th class="selectable_column" width="20%">التصرف النهائي </th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -430,10 +539,14 @@ WHERE
                                         <tr data-child-value="<?php
                                         ?>">
                                             <td>
-                                                <?php echo $investigation_info['investigation_number']." / ".$investigation_info['investigation_year']?>
+                                                <a href="investigation_profile.php?id=<?php echo $investigation_info['id_case_has_investigation'] ?>">
+                                                    <button type="button" class="btn waves-effect waves-light btn-info">
+                                                        <?php echo $investigation_info['investigation_number']." / ".$investigation_info['investigation_year']?>
+                                                    </button>
+                                                </a>
                                             </td>
                                             <td>
-                                                <?php echo $investigation_info['case_number']." / ".$investigation_info['case_year']." / ".$investigation_info['main_ledger_name']." / ".$investigation_info['depart_name']?>
+                                                <?php echo $investigation_info['case_number']." / ".$investigation_info['case_year']." <br> ".$investigation_info['main_ledger_name']." / ".$investigation_info['depart_name']?>
                                             </td>
                                             <td>
                                                 <?php
@@ -507,11 +620,14 @@ WHERE
                                                 ?>
                                             </td>
                                             <td>
-                                                <a href="investigation_profile.php?id=<?php echo $investigation_info['id_case_has_investigation'] ?>">
-                                                    <button type="button" class="btn waves-effect waves-light btn-info">
-                                                        للتعديل
-                                                    </button>
-                                                </a>
+                                                <?php
+                                                echo $investigation_info['initial_action_name']
+                                                ?>
+                                            </td>
+                                            <td>
+                                                <?php
+                                                echo $investigation_info['final_action_name']
+                                                ?>
                                             </td>
                                         </tr>
                                         <?php
@@ -521,12 +637,13 @@ WHERE
                                     <tfoot>
                                     <tr>
                                         <th width="10%">رقم الحصر </th>
-                                        <th width="18%">الرقم القضائي </th>
+                                        <th width="10%">الرقم القضائي </th>
                                         <th width="17%">وكيل النيابة </th>
                                         <th width="5%">التهمة </th>
                                         <th width="20%">سبب البقاء </th>
                                         <th width="20%">حالة القضية </th>
-                                        <th class="unsearchable" width="9%"></th><!--tools-->
+                                        <th width="20%">التصرف المبدئي </th>
+                                        <th width="20%">التصرف النهائي </th>
                                     </tr>
                                     </tfoot>
                                 </table>
@@ -610,7 +727,7 @@ WHERE
     $(document).ready(function() {
         $('#datatable').DataTable({
             initComplete: function () {
-                this.api().columns(':eq(2),:eq(5)').every( function () {
+                this.api().columns(':eq(2),:eq(5),:eq(6),:eq(7)').every( function () {
                     var column = this;
                     var select = $('<select><option value=""></option></select>')
                         .appendTo( $(column.footer()).empty() )
@@ -639,7 +756,7 @@ WHERE
             order: [],
             dom: 'lfrtip',
         });
-        $('#datatable tfoot th').not(':eq(2),:eq(5),:eq(6)').each(function() {
+        $('#datatable tfoot th').not(':eq(2),:eq(5),:eq(6),:eq(7),:eq(8)').each(function() {
             var title = $(this).text();
             $(this).html('<input class="col-lg-12" type="text" placeholder="'+title+'" />');
         });
@@ -668,6 +785,35 @@ WHERE
     }
 
     blink('.blink');
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var maxField = 150; //Input fields increment limitation
+        var addButton = $('.add_button'); //Add button selector
+        var wrapper = $('.field_wrapper'); //Input field wrapper
+        var y = 1; //Initial field counter is 1
+        var fieldHTML = '<div class="form-group row col-sm-12"><div class="col-sm-2"><button type="button" class="btn btn-danger btn-circle remove_button"><i class="fa fa-minus"></i> </button></div><div class="col-sm-4"><div class="form-group has-danger"><input required type="text" name="investigation_session_date[]" id="" class="form-control date_autoclose filters" placeholder="تاريخ الجلسة" autocomplete="off"></div></div><div class="col-sm-6"><div class="form-group has-danger"><input type="text" name="investigation_session_note[]" id="" class="form-control" placeholder="ملاحظات"></div></div></div>'; //New input field html
+        var x = 1; //Initial field counter is 1
+        $(addButton).click(function(){ //Once add button is clicked
+            y++; //Increment field counter
+            if(x < maxField){ //Check maximum number of input fields
+                x++; //Increment field counter
+                $(wrapper).append(fieldHTML); // Add field html
+                jQuery('.date_autoclose').datepicker({
+                    autoclose: true,
+                    todayHighlight: true,
+                    dateFormat: 'd-m-yy',
+                    showWeek: true,
+                    firstDay: 1
+                });
+            }
+        });
+        $(wrapper).on('click', '.remove_button', function(e){ //Once remove button is clicked
+            e.preventDefault();
+            $(this).parent('div').parent('div').remove(); //Remove field html
+            x--; //Decrement field counter
+        });
+    });
 </script>
 <?php
 include_once "layout/common_script.php";
